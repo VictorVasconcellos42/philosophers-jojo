@@ -26,12 +26,18 @@ int mise_en_place(t_table *table)
     return (0);
 }
 
-int am_i_dead(t_philo *philo)
+int dead(t_philo *philo)
 {
     if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_die)
 	return (FALSE);
     pthread_mutex_lock(&philo->table->dead_mtx);
-    philo->dead = 1;
+    if (philo->table->first_death)
+    {
+	// destroy(philo->table);
+	exit (1);
+	pthread_mutex_unlock(&philo->table->dead_mtx);
+    }
+    philo->table->first_death = 1;
     pthread_mutex_unlock(&philo->table->dead_mtx);
     return (TRUE);
 }
@@ -39,10 +45,20 @@ int am_i_dead(t_philo *philo)
 void	print_action(char *str, t_philo *philo)
 {
     pthread_mutex_lock(&philo->table->write_mtx);
-    if (!am_i_dead(philo))
+    if (!dead(philo))
 	printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
+    else
+	printf("%lu %i is DEAD\n", current_ms() - philo->table->start_time, philo->seat);
     pthread_mutex_unlock(&philo->table->write_mtx);
 }
+
+// void	print_as_monitor(char *str, t_philo *philo)
+// {
+//     pthread_mutex_lock(&philo->table->write_mtx);
+//     if (am_i_dead(philo))
+// 	printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
+//     pthread_mutex_unlock(&philo->table->write_mtx);
+// }
 
 int eat(t_philo *philo)
 {
@@ -62,7 +78,7 @@ int eat(t_philo *philo)
 int nap(t_philo *philo)
 {
     print_action("is sleeping", philo);
-    ft_usleep2(philo->table->time_to_sleep, philo);
+    ft_usleep(philo->table->time_to_sleep);
     return (0);
 }
 
@@ -83,7 +99,6 @@ void	*monitor(t_table *table)
 	if (table->philos[count].dead)
 	{
 	    pthread_mutex_unlock(&table->dead_mtx);
-	    print_action("is DEAD", &table->philos[count]);
 	    // end simulation and destroy threads
 	    break ;
 	}
@@ -99,7 +114,7 @@ void	*dinner(t_philo *philo)
 {
     if (philo->seat % 2 == 0)
 	ft_usleep(1);
-    while (!am_i_dead(philo))
+    while (!dead(philo))
     {
 	eat(philo);
 	nap(philo);

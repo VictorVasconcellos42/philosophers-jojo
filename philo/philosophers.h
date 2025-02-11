@@ -48,7 +48,7 @@ typedef struct s_table
 
 	long				start_time;
 
-	// t_philo				*first_death;
+	int				first_death;
 	pthread_mutex_t			dead_mtx;
 	pthread_mutex_t			write_mtx;
 
