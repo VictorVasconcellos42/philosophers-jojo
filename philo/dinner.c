@@ -1,22 +1,28 @@
 # include "philosophers.h"
 void	*dinner(t_philo *philo);
+void	*monitor(t_table *table);
 
 int mise_en_place(t_table *table)
 {
     int	count = 0;
 
     table->start_time = current_ms();
+    
+    pthread_create(&table->monitor_thread, NULL, (void *)monitor, table);
     while (count < table->n_philos)
     {
 	pthread_create(&table->philos[count].thread, NULL, (void *)dinner, &table->philos[count]);
 	count++;
     }
     count = 0;
+
+    pthread_join(table->monitor_thread, NULL);
     while (count < table->n_philos)
     {
 	pthread_join(table->philos[count].thread, NULL);
 	count++;
     }
+    table->philos_ready = 1;
     return (0);
 }
 
@@ -24,6 +30,9 @@ int am_i_dead(t_philo *philo)
 {
     if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_eat)
 	return (FALSE);
+    pthread_mutex_lock(&philo->table->dead_mtx);
+    philo->dead = 1;
+    pthread_mutex_unlock(&philo->table->dead_mtx);
     return (TRUE);
 }
 
@@ -50,11 +59,51 @@ int eat(t_philo *philo)
     return (0);
 }
 
+int nap(t_philo *philo)
+{
+    print_action("is sleeping", philo);
+    ft_usleep2(philo->table->time_to_sleep, philo);
+    return (0);
+}
+
+int think(t_philo *philo)
+{
+    print_action("is thinking", philo);
+    ft_usleep(philo->table->time_to_think);
+    return (0);
+}
+
+void	*monitor(t_table *table)
+{
+    int	count = 0;
+
+    while (count < table->n_philos)
+    {
+	pthread_mutex_lock(&table->dead_mtx);
+	if (table->philos[count].dead)
+	{
+	    print_action("is DEAD", &table->philos[count]);
+	    pthread_mutex_unlock(&table->dead_mtx);
+	    // end simulation and destroy threads
+	    break ;
+	}
+	pthread_mutex_unlock(&table->dead_mtx);
+	count++;
+	if (count == table->n_philos)
+	    count = 0;
+    }
+    return (NULL);
+}
+
 void	*dinner(t_philo *philo)
 {
-    while (1)
+    if (philo->seat % 2 == 0)
+	ft_usleep(1);
+    while (!am_i_dead(philo))
+    {
 	eat(philo);
-    // nap(philo);
-    // think(philo);
+	nap(philo);
+	think(philo);
+    }
     return (NULL);
 }

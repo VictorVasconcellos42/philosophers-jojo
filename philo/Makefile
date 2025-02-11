@@ -4,7 +4,7 @@ SRC= main.c parser.c dinner.c utils.c
 OBJ= $(SRC:.c=.o)
 
 CC=cc
-FLAGS=-Wall -Wextra -Werror -pthread
+FLAGS= -ggdb3 -Wall -Wextra -Werror -pthread
 
 all: $(NAME) clean
 

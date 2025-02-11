@@ -17,6 +17,7 @@ typedef struct					s_philo
 	int					seat;
 	pthread_t			thread;
 	pthread_mutex_t		mtx;
+
 	int					dead;
 
 	long unsigned			meals;
@@ -41,14 +42,14 @@ typedef struct s_table
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-
-	long				start_time;
-	int				end_simulation;
-
+	int				time_to_think;
 
 	int				philos_ready;
 
-	pthread_mutex_t			mtx;
+	long				start_time;
+
+	// t_philo				*first_death;
+	pthread_mutex_t			dead_mtx;
 	pthread_mutex_t			write_mtx;
 
 }						t_table;
@@ -59,9 +60,11 @@ void parse(int argc, char **argv, t_table *table);
 
 // utils.c
 size_t	current_ms(void);
+int	ft_usleep2(size_t milliseconds, t_philo *philo);
 int	ft_usleep(size_t milliseconds);
 
 // dinner.c
 int mise_en_place(t_table *table);
+void	print_action(char *str, t_philo *philo);
 
 #endif
