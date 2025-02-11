@@ -15,6 +15,21 @@ int	ft_usleep(size_t milliseconds)
 
 	start = current_ms();
 	while ((current_ms() - start) < milliseconds)
-		usleep(500);
+		usleep(20);
 	return (0);
 }
+
+int	usleep_until(size_t milliseconds, t_philo *philo)
+{
+	size_t	start;
+
+	start = current_ms();
+	while ((current_ms() - start) < milliseconds)
+	{
+		if (am_i_dead(philo) || check_death(philo))
+			exit (1);
+		usleep(20);
+	}
+	return (0);
+}
+

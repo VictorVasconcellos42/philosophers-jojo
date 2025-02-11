@@ -39,7 +39,6 @@ void	init(t_table *table)
     table->start_time = current_ms();
     table->first_death = 0;
     table->philos_ready = 0;
-    table->time_to_think = table->time_to_eat * 2 - table->time_to_sleep;
     pthread_mutex_init(&table->dead_mtx, NULL);
     pthread_mutex_init(&table->write_mtx, NULL);
 }

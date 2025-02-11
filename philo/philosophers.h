@@ -42,7 +42,6 @@ typedef struct s_table
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				time_to_think;
 
 	int				philos_ready;
 
@@ -50,6 +49,7 @@ typedef struct s_table
 
 	int				first_death;
 	pthread_mutex_t			dead_mtx;
+
 	pthread_mutex_t			write_mtx;
 
 }						t_table;
@@ -62,9 +62,12 @@ void parse(int argc, char **argv, t_table *table);
 size_t	current_ms(void);
 int	ft_usleep2(size_t milliseconds, t_philo *philo);
 int	ft_usleep(size_t milliseconds);
+int	usleep_until(size_t milliseconds, t_philo *philo);
 
 // dinner.c
 int mise_en_place(t_table *table);
 void	print_action(char *str, t_philo *philo);
+int am_i_dead(t_philo *philo);
+int check_death(t_philo *philo);
 
 #endif
