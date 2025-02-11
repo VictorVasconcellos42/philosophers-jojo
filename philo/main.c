@@ -24,9 +24,9 @@ void	init_philos(t_table *table)
 	else
 	    table->philos[count].right_hashi = &table->hashis[count + 1];
 	table->philos[count].table = table;
-	table->philos[count].meals_count = 0;
-	table->philos[count].last_meal_time = 0;
-	table->philos[count].id = count + 1;
+	table->philos[count].meals = 0;
+	table->philos[count].last_meal = current_ms();
+	table->philos[count].seat = count + 1;
 	count++;
     }
 }
@@ -35,11 +35,10 @@ void	init(t_table *table)
 {
     init_hashis(table);
     init_philos(table);
-    table->start_time = 0;
+    table->start_time = current_ms();
     table->end_simulation = false;
-    table->all_philos_ready = false;
     table->philos_ready = 0;
-    pthread_mutex_init(&table->table_mtx, NULL);
+    pthread_mutex_init(&table->mtx, NULL);
     pthread_mutex_init(&table->write_mtx, NULL);
 }
 

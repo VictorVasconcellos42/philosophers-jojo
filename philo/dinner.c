@@ -17,17 +17,31 @@ int mise_en_place(t_table *table)
 	pthread_join(table->philos[count].thread, NULL);
 	count++;
     }
-
     return (0);
+}
+
+int am_i_dead(t_philo *philo)
+{
+    if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_eat)
+	return (FALSE);
+    return (TRUE);
+}
+
+void	print_action(char *str, t_philo *philo)
+{
+    pthread_mutex_lock(&philo->table->write_mtx);
+    if (!am_i_dead(philo))
+	printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
+    pthread_mutex_unlock(&philo->table->write_mtx);
 }
 
 int eat(t_philo *philo)
 {
     pthread_mutex_lock(philo->left_hashi);
-    printf("%lu %i has taken a fork\n", current_ms() - philo->table->start_time, philo->id);
+    print_action("has taken a fork", philo);
     pthread_mutex_lock(philo->right_hashi);
-    printf("%lu %i has taken a fork\n", current_ms() - philo->table->start_time, philo->id);
-    printf("%lu %i is eating\n", current_ms() - philo->table->start_time, philo->id);
+    print_action("has taken a fork", philo);
+    print_action("is eating", philo);
     pthread_mutex_unlock(philo->left_hashi);
     pthread_mutex_unlock(philo->right_hashi);
     return (0);
@@ -35,11 +49,8 @@ int eat(t_philo *philo)
 
 void	*dinner(t_philo *philo)
 {
-    //eat
     eat(philo);
-    //sleep
-    // sleep(philo);
-    //think
+    // nap(philo);
     // think(philo);
     return (NULL);
 }

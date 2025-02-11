@@ -14,14 +14,14 @@
 
 typedef struct					s_philo
 {
-	int				id;
+	int					seat;
 	pthread_t			thread;
-	pthread_mutex_t			mtx;
-	bool				dead;
+	pthread_mutex_t		mtx;
+	int					dead;
 
-	long				meals_count;
-	int				full;
-	long				last_meal_time;
+	long unsigned			meals;
+	int						full;
+	long unsigned			last_meal;
 
 	pthread_mutex_t			*left_hashi;	
 	pthread_mutex_t			*right_hashi;
@@ -46,10 +46,9 @@ typedef struct s_table
 	int				end_simulation;
 
 
-	int				all_philos_ready;
-	long				philos_ready;
+	int				philos_ready;
 
-	pthread_mutex_t			table_mtx;
+	pthread_mutex_t			mtx;
 	pthread_mutex_t			write_mtx;
 
 }						t_table;
