@@ -93,7 +93,7 @@ int eat(t_philo *philo)
     pthread_mutex_lock(philo->right_hashi);
     print_action("has taken a fork", philo);
     print_action("is eating", philo);
-    ft_usleep(philo->table->time_to_eat);
+    usleep(philo->table->time_to_eat);
     philo->last_meal = current_ms();
     pthread_mutex_unlock(philo->left_hashi);
     pthread_mutex_unlock(philo->right_hashi);
@@ -104,7 +104,7 @@ int eat(t_philo *philo)
 int nap(t_philo *philo)
 {
     print_action("is sleeping", philo);
-    usleep_until(philo->table->time_to_sleep, philo);
+    usleep(philo->table->time_to_sleep);
     return (0);
 }
 
@@ -122,7 +122,7 @@ void	*monitor(t_table *table)
     {
 	if (mark_dead(&table->philos[count]))
 	{
-	    // printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+	    printf("%lu, \n", current_ms() - table->philos[count].last_meal);
 	    print_action("is DEAD", &table->philos[count]);
 	    // end simulation and destroy threads
 	    break ;
@@ -137,7 +137,7 @@ void	*monitor(t_table *table)
 void	*dinner(t_philo *philo)
 {
     if (philo->seat % 2 == 0)
-	ft_usleep(1);
+	usleep(15000);
     while (!check_death(philo))
     {
 	eat(philo);
