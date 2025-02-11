@@ -59,6 +59,7 @@ void parse(int argc, char **argv, t_table *table);
 
 // utils.c
 size_t	current_ms(void);
+int	ft_usleep(size_t milliseconds);
 
 // dinner.c
 int mise_en_place(t_table *table);

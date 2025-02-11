@@ -42,14 +42,18 @@ int eat(t_philo *philo)
     pthread_mutex_lock(philo->right_hashi);
     print_action("has taken a fork", philo);
     print_action("is eating", philo);
+    ft_usleep(philo->table->time_to_eat);
+    philo->last_meal = current_ms();
     pthread_mutex_unlock(philo->left_hashi);
     pthread_mutex_unlock(philo->right_hashi);
+    philo->meals++;
     return (0);
 }
 
 void	*dinner(t_philo *philo)
 {
-    eat(philo);
+    while (1)
+	eat(philo);
     // nap(philo);
     // think(philo);
     return (NULL);
