@@ -1,6 +1,6 @@
 NAME=philo
 
-SRC= main.c parser.c
+SRC= main.c parser.c dinner.c utils.c
 OBJ= $(SRC:.c=.o)
 
 CC=cc

@@ -26,6 +26,7 @@ void	init_philos(t_table *table)
 	table->philos[count].table = table;
 	table->philos[count].meals_count = 0;
 	table->philos[count].last_meal_time = 0;
+	table->philos[count].id = count + 1;
 	count++;
     }
 }
@@ -54,5 +55,6 @@ int main(int argc, char **argv)
     }
     parse(argc, argv, &table);
     init(&table);
+    mise_en_place(&table);
     return (EXIT_SUCCESS);
 }
