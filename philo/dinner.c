@@ -28,7 +28,7 @@ int mise_en_place(t_table *table)
 
 int am_i_dead(t_philo *philo)
 {
-    if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_eat)
+    if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_die)
 	return (FALSE);
     pthread_mutex_lock(&philo->table->dead_mtx);
     philo->dead = 1;
@@ -82,8 +82,8 @@ void	*monitor(t_table *table)
 	pthread_mutex_lock(&table->dead_mtx);
 	if (table->philos[count].dead)
 	{
-	    print_action("is DEAD", &table->philos[count]);
 	    pthread_mutex_unlock(&table->dead_mtx);
+	    print_action("is DEAD", &table->philos[count]);
 	    // end simulation and destroy threads
 	    break ;
 	}
