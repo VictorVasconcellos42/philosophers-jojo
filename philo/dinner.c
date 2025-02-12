@@ -1,4 +1,5 @@
 # include "philosophers.h"
+#include <pthread.h>
 void	*dinner(t_philo *philo);
 void	*monitor(t_table *table);
 
@@ -14,6 +15,7 @@ int mise_en_place(t_table *table)
 	pthread_create(&table->philos[count].thread, NULL, (void *)dinner, &table->philos[count]);
 	count++;
     }
+    // mutext
     table->philos_ready = 1;
     count = 0;
     pthread_join(table->monitor_thread, NULL);
@@ -29,10 +31,10 @@ int mark_dead(t_philo *philo)
 {
     if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_die)
 	return (FALSE);
-    if (philo->last_meal == 0)
-    {
-	return FALSE;
-    }
+	//    if (philo->last_meal == 0)
+	//    {
+	// return FALSE;
+	//    }
     pthread_mutex_lock(&philo->dead_mtx);
     if (philo->dead)
     {
@@ -89,8 +91,8 @@ int eat(t_philo *philo)
     pthread_mutex_lock(philo->right_hashi);
     print_action("has taken a fork", philo);
     print_action("is eating", philo);
-    usleep_until(philo->table->time_to_eat, philo);
     philo->last_meal = current_ms();
+    usleep_until(philo->table->time_to_eat, philo);
     pthread_mutex_unlock(philo->left_hashi);
     pthread_mutex_unlock(philo->right_hashi);
     philo->meals++;
