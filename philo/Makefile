@@ -1,6 +1,6 @@
 NAME=philo
 
-SRC= main.c parser.c dinner.c utils.c monitor.c
+SRC= main.c parser.c dinner.c utils.c monitor.c init.c print.c
 OBJ= $(SRC:.c=.o)
 
 FLAGS= -ggdb3 -Wall -Wextra -Werror -pthread

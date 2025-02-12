@@ -55,25 +55,27 @@ typedef struct s_table
 
 }						t_table;
 
+// dinner.c
+void	*dinner(t_philo *philo);
+
+// init.c
+void	init(t_table *table);
+
+// monitor.c
+int death(t_philo *philo);
+void	*monitor(t_table *table);
+
 // parser.c
-int	ft_atol(char *ascii);
 void parse(int argc, char **argv, t_table *table);
 
 // utils.c
 size_t	current_ms(void);
-int	ft_usleep2(size_t milliseconds, t_philo *philo);
 int	ft_usleep(size_t milliseconds);
 int	usleep_until(size_t milliseconds, t_philo *philo);
+int	ft_atol(char *ascii);
 
-// dinner.c
-int mise_en_place(t_table *table);
-void	print_action(char *str, t_philo *philo);
-int am_i_dead(t_philo *philo);
-int death(t_philo *philo);
-// int check_death(t_table *table);
-
-// monitor.c
-void	*monitor(t_table *table);
+// print.c
+void	printj(char *str, t_philo *philo);
 int	print_routine(char *str, t_philo *philo);
 
 #endif

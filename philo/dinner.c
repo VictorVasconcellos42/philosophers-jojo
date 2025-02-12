@@ -1,29 +1,6 @@
 # include "philosophers.h"
-void	*dinner(t_philo *philo);
-void	*monitor(t_table *table);
 
-int mise_en_place(t_table *table)
-{
-    int	count = 0;
-
-    pthread_create(&table->monitor_thread, NULL, (void *)monitor, table);
-    while (count < table->n_philos)
-    {
-	pthread_create(&table->philos[count].thread, NULL, (void *)dinner, &table->philos[count]);
-	count++;
-    }
-    table->philos_ready = 1;
-    count = 0;
-    pthread_join(table->monitor_thread, NULL);
-    while (count < table->n_philos)
-    {
-	pthread_join(table->philos[count].thread, NULL);
-	count++;
-    }
-    return (0);
-}
-
-int more_meals(t_philo *philo)
+static int more_meals(t_philo *philo)
 {
     pthread_mutex_lock(&philo->table->meal_mtx);
     if (philo->table->n_meals == -1 || philo->meals < philo->table->n_meals)
@@ -35,7 +12,7 @@ int more_meals(t_philo *philo)
     return (FALSE);
 }
 
-int eat(t_philo *philo)
+static int eat(t_philo *philo)
 {
     if (!more_meals(philo))
 	return (1);
@@ -56,7 +33,7 @@ int eat(t_philo *philo)
     return (0);
 }
 
-int nap(t_philo *philo)
+static int nap(t_philo *philo)
 {
     if (print_routine("is sleeping", philo) == 1)
 	return (1);
@@ -65,7 +42,7 @@ int nap(t_philo *philo)
     return (0);
 }
 
-int think(t_philo *philo)
+static int think(t_philo *philo)
 {
     if (print_routine("is thinking", philo) == 1)
 	return (1);
@@ -88,6 +65,8 @@ void	*dinner(t_philo *philo)
 	if (nap(philo) == 1)
 	    break ;
 	if (think(philo) == 1)
+	    break ;
+	if (philo->table->death)
 	    break ;
     }
     return (NULL);
