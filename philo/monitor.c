@@ -4,22 +4,22 @@ int mark_dead(t_philo *philo)
 {
     if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_die)
 	return (FALSE);
-    pthread_mutex_lock(&philo->dead_mtx);
-    if (philo->dead)
-	philo->dead = 1;
-    pthread_mutex_unlock(&philo->dead_mtx);
+    pthread_mutex_lock(&philo->table->dead_mtx);
+    if (!philo->table->death)
+	philo->table->death = philo->seat;
+    pthread_mutex_unlock(&philo->table->dead_mtx);
     return (TRUE);
 }
 
-int check_death(t_philo *philo)
+int death(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->dead_mtx);
-    if (philo->dead)
+    pthread_mutex_lock(&philo->table->dead_mtx);
+    if (philo->table->death)
     {
-	pthread_mutex_unlock(&philo->dead_mtx);
+	pthread_mutex_unlock(&philo->table->dead_mtx);
 	return (TRUE);
     }
-    pthread_mutex_unlock(&philo->dead_mtx);
+    pthread_mutex_unlock(&philo->table->dead_mtx);
     return (FALSE);
 }
 
@@ -32,12 +32,8 @@ void	printj(char *str, t_philo *philo)
 
 void	print_routine(char *str, t_philo *philo)
 {
-    if (check_death(philo))
-    {
-	printj("is DEAD", philo);
-	exit (1);
-    }
-    printj(str, philo);
+    if (!death(philo))
+	printj(str, philo);
 }
 
 void	*monitor(t_table *table)
@@ -53,7 +49,8 @@ void	*monitor(t_table *table)
 	{
 	    // printf("%lu, \n", current_ms() - table->philos[count].last_meal);
 	    printj("is DEAD", &table->philos[count]);
-	    exit (1);
+	    // exit (1);
+	    // return (NULL);
 	    // end simulation and destroy threads
 	    break ;
 	}

@@ -14,17 +14,32 @@ int mise_en_place(t_table *table)
     }
     table->philos_ready = 1;
     count = 0;
-    pthread_join(table->monitor_thread, NULL);
     while (count < table->n_philos)
     {
 	pthread_join(table->philos[count].thread, NULL);
 	count++;
     }
+    pthread_join(table->monitor_thread, NULL);
+    free(table->philos);
+    free(table->hashis);
     return (0);
+}
+
+int more_meals(t_philo *philo)
+{
+    pthread_mutex_lock(&philo->table->meal_mtx);
+    if (philo->table->n_meals == -1 || philo->meals < philo->table->n_meals)
+    {
+	pthread_mutex_unlock(&philo->table->meal_mtx);
+	return (TRUE);
+    }
+    pthread_mutex_unlock(&philo->table->meal_mtx);
+    return (FALSE);
 }
 
 int eat(t_philo *philo)
 {
+       
     pthread_mutex_lock(philo->left_hashi);
     print_routine("has taken a fork", philo);
     pthread_mutex_lock(philo->right_hashi);
@@ -53,14 +68,14 @@ int think(t_philo *philo)
 
 void	*dinner(t_philo *philo)
 {
-	//    while (1)
-	// if (philo->table->philos_ready)
-	//     break ;
+    while (1)
+	if (philo->table->philos_ready)
+	    break ;
     philo->table->start_time = current_ms();
     philo->last_meal = philo->table->start_time;
     if (philo->seat % 2 == 0)
-	usleep(15000);
-    while (!check_death(philo))
+	usleep(100);
+    while (!death(philo)) // && more_meals(philo))
     {
 	if (eat(philo) == 1)
 	    break ;

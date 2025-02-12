@@ -16,12 +16,12 @@ typedef struct					s_philo
 {
 	int					seat;
 	pthread_t			thread;
-	pthread_mutex_t		dead_mtx;
+	// pthread_mutex_t		dead_mtx;
 
-	int					dead;
+	// int					dead;
 
-	long unsigned			meals;
-	int						full;
+	int			meals;
+	// int						full;
 	long unsigned			last_meal;
 
 	pthread_mutex_t			*left_hashi;	
@@ -47,8 +47,9 @@ typedef struct s_table
 
 	long				start_time;
 
-	int				first_death;
+	int						death;
 	pthread_mutex_t			dead_mtx;
+	pthread_mutex_t			meal_mtx;
 
 	pthread_mutex_t			write_mtx;
 
@@ -68,7 +69,8 @@ int	usleep_until(size_t milliseconds, t_philo *philo);
 int mise_en_place(t_table *table);
 void	print_action(char *str, t_philo *philo);
 int am_i_dead(t_philo *philo);
-int check_death(t_philo *philo);
+int death(t_philo *philo);
+// int check_death(t_table *table);
 
 // monitor.c
 void	*monitor(t_table *table);
