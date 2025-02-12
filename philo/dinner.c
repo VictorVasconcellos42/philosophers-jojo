@@ -22,7 +22,6 @@ int mise_en_place(t_table *table)
 	pthread_join(table->philos[count].thread, NULL);
 	count++;
     }
-    table->philos_ready = 1;
     return (0);
 }
 
@@ -34,26 +33,26 @@ int mark_dead(t_philo *philo)
     {
 	return FALSE;
     }
-    pthread_mutex_lock(&philo->table->dead_mtx);
-    if (philo->table->first_death)
+    pthread_mutex_lock(&philo->dead_mtx);
+    if (philo->dead)
     {
-	pthread_mutex_unlock(&philo->table->dead_mtx);
+	pthread_mutex_unlock(&philo->dead_mtx);
 	return (TRUE);
     }
-    philo->table->first_death = philo->seat;
-    pthread_mutex_unlock(&philo->table->dead_mtx);
+    philo->dead = philo->seat;
+    pthread_mutex_unlock(&philo->dead_mtx);
     return (TRUE);
 }
 
 int check_death(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->table->dead_mtx);
-    if (philo->table->first_death)
+    pthread_mutex_lock(&philo->dead_mtx);
+    if (philo->dead)
     {
-	pthread_mutex_unlock(&philo->table->dead_mtx);
-	return (philo->table->first_death);
+	pthread_mutex_unlock(&philo->dead_mtx);
+	return (TRUE);
     }
-    pthread_mutex_unlock(&philo->table->dead_mtx);
+    pthread_mutex_unlock(&philo->dead_mtx);
     return (FALSE);
 }
 
@@ -63,7 +62,6 @@ int am_i_dead(t_philo *philo)
     if (philo->table->first_death == philo->seat)
     {
 	pthread_mutex_unlock(&philo->table->dead_mtx);
-	// print_action("is DEAD", philo);
 	return (TRUE);
     }
     pthread_mutex_unlock(&philo->table->dead_mtx);
@@ -72,15 +70,11 @@ int am_i_dead(t_philo *philo)
 
 void	print_action(char *str, t_philo *philo)
 {
-    int dead = check_death(philo);
-    if (dead)
+    if (check_death(philo))
     {
-	if (dead == philo->seat)
-	{
-	    pthread_mutex_lock(&philo->table->write_mtx);
-	    printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
-	    pthread_mutex_unlock(&philo->table->write_mtx);
-	}
+	pthread_mutex_lock(&philo->table->write_mtx);
+	printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
+	pthread_mutex_unlock(&philo->table->write_mtx);
 	exit (1);
     }
     pthread_mutex_lock(&philo->table->write_mtx);
@@ -95,7 +89,7 @@ int eat(t_philo *philo)
     pthread_mutex_lock(philo->right_hashi);
     print_action("has taken a fork", philo);
     print_action("is eating", philo);
-    usleep(philo->table->time_to_eat);
+    usleep_until(philo->table->time_to_eat, philo);
     philo->last_meal = current_ms();
     pthread_mutex_unlock(philo->left_hashi);
     pthread_mutex_unlock(philo->right_hashi);

@@ -28,6 +28,7 @@ void	init_philos(t_table *table)
 	table->philos[count].dead = 0;
 	table->philos[count].last_meal = current_ms();
 	table->philos[count].seat = count + 1;
+	pthread_mutex_init(&table->philos[count].dead_mtx, NULL);
 	count++;
     }
 }

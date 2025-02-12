@@ -16,7 +16,7 @@ typedef struct					s_philo
 {
 	int					seat;
 	pthread_t			thread;
-	pthread_mutex_t		mtx;
+	pthread_mutex_t		dead_mtx;
 
 	int					dead;
 
