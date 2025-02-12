@@ -70,4 +70,8 @@ void	print_action(char *str, t_philo *philo);
 int am_i_dead(t_philo *philo);
 int check_death(t_philo *philo);
 
+// monitor.c
+void	*monitor(t_table *table);
+void	print_routine(char *str, t_philo *philo);
+
 #endif

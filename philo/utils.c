@@ -26,7 +26,7 @@ int	usleep_until(size_t milliseconds, t_philo *philo)
 	start = current_ms();
 	while ((current_ms() - start) < milliseconds)
 	{
-		if (am_i_dead(philo) || check_death(philo))
+		if (check_death(philo))
 			exit (1);
 		usleep(50);
 	}

@@ -1,10 +1,10 @@
 NAME=philo
 
-SRC= main.c parser.c dinner.c utils.c
+SRC= main.c parser.c dinner.c utils.c monitor.c
 OBJ= $(SRC:.c=.o)
 
-CC=cc
 FLAGS= -ggdb3 -Wall -Wextra -Werror -pthread
+CC=cc
 
 all: $(NAME) clean
 
