@@ -27,9 +27,8 @@ int	usleep_until(size_t milliseconds, t_philo *philo)
 	while ((current_ms() - start) < milliseconds)
 	{
 		if (death(philo))
-			exit (1);
+			return (1);
 		usleep(50);
 	}
 	return (0);
 }
-

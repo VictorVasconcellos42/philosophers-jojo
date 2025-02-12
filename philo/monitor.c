@@ -30,10 +30,13 @@ void	printj(char *str, t_philo *philo)
 	pthread_mutex_unlock(&philo->table->write_mtx);
 }
 
-void	print_routine(char *str, t_philo *philo)
+int	print_routine(char *str, t_philo *philo)
 {
     if (!death(philo))
 	printj(str, philo);
+    else
+	return (1);
+    return (0);
 }
 
 void	*monitor(t_table *table)

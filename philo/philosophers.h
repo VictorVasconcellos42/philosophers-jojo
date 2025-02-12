@@ -74,6 +74,6 @@ int death(t_philo *philo);
 
 // monitor.c
 void	*monitor(t_table *table);
-void	print_routine(char *str, t_philo *philo);
+int	print_routine(char *str, t_philo *philo);
 
 #endif

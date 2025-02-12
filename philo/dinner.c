@@ -39,14 +39,19 @@ int more_meals(t_philo *philo)
 
 int eat(t_philo *philo)
 {
-       
+    if (!more_meals(philo))
+	return (1);
     pthread_mutex_lock(philo->left_hashi);
-    print_routine("has taken a fork", philo);
+    if (print_routine("has taken a fork", philo) == 1)
+	return (1);
     pthread_mutex_lock(philo->right_hashi);
-    print_routine("has taken a fork", philo);
-    print_routine("is eating", philo);
+    if (print_routine("has taken a fork", philo) == 1)
+	return (1);
+    if (print_routine("is eating", philo) == 1)
+	return (1);
     philo->last_meal = current_ms();
-    usleep_until(philo->table->time_to_eat, philo);
+    if (usleep_until(philo->table->time_to_eat, philo) == 1)
+	return (1);
     pthread_mutex_unlock(philo->left_hashi);
     pthread_mutex_unlock(philo->right_hashi);
     philo->meals++;
@@ -55,14 +60,17 @@ int eat(t_philo *philo)
 
 int nap(t_philo *philo)
 {
-    print_routine("is sleeping", philo);
-    usleep_until(philo->table->time_to_sleep, philo);
+    if (print_routine("is sleeping", philo) == 1)
+	return (1);
+    if (usleep_until(philo->table->time_to_sleep, philo))
+	return (1);
     return (0);
 }
 
 int think(t_philo *philo)
 {
-    print_routine("is thinking", philo);
+    if (print_routine("is thinking", philo) == 1)
+	return (1);
     return (0);
 }
 
@@ -75,7 +83,7 @@ void	*dinner(t_philo *philo)
     philo->last_meal = philo->table->start_time;
     if (philo->seat % 2 == 0)
 	usleep(100);
-    while (!death(philo)) // && more_meals(philo))
+    while (!death(philo))
     {
 	if (eat(philo) == 1)
 	    break ;
