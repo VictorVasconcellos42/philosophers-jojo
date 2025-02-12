@@ -66,8 +66,7 @@ void	*dinner(t_philo *philo)
 	    break ;
 	if (think(philo) == 1)
 	    break ;
-	if (philo->table->death)
-	    break ;
     }
+    printf("%i\n", philo->seat);
     return (NULL);
 }

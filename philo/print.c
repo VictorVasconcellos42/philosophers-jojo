@@ -12,6 +12,9 @@ int	print_routine(char *str, t_philo *philo)
     if (!death(philo))
 	printj(str, philo);
     else
+    {
+	printf("print\n");
 	return (1);
+    }
     return (0);
 }

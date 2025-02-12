@@ -18,6 +18,7 @@ static int mise_en_place(t_table *table)
 	count++;
     }
     pthread_join(table->monitor_thread, NULL);
+    printf("saiuu\n");
     return (0);
 }
 

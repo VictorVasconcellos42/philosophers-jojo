@@ -1,4 +1,5 @@
 # include "philosophers.h"
+#include <stdio.h>
 
 static int mark_dead(t_philo *philo)
 {
@@ -45,5 +46,6 @@ void	*monitor(t_table *table)
 	if (count == table->n_philos)
 	    count = 0;
     }
+    printf("monitor\n");
     return (NULL);
 }
