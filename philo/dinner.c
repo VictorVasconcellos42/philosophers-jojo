@@ -14,14 +14,12 @@ int mise_en_place(t_table *table)
     }
     table->philos_ready = 1;
     count = 0;
+    pthread_join(table->monitor_thread, NULL);
     while (count < table->n_philos)
     {
 	pthread_join(table->philos[count].thread, NULL);
 	count++;
     }
-    pthread_join(table->monitor_thread, NULL);
-    free(table->philos);
-    free(table->hashis);
     return (0);
 }
 
