@@ -28,7 +28,7 @@ int	usleep_until(size_t milliseconds, t_philo *philo)
 	{
 		if (am_i_dead(philo) || check_death(philo))
 			exit (1);
-		usleep(20);
+		usleep(50);
 	}
 	return (0);
 }

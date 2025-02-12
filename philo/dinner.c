@@ -29,7 +29,7 @@ int mise_en_place(t_table *table)
 
 int mark_dead(t_philo *philo)
 {
-    if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_die)
+    if ((current_ms() - philo->last_meal) < (long unsigned)philo->table->time_to_die + 20)
 	return (FALSE);
 	//    if (philo->last_meal == 0)
 	//    {
@@ -70,18 +70,21 @@ int am_i_dead(t_philo *philo)
     return (FALSE);
 }
 
+void	printj(char *str, t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->write_mtx);
+	printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
+	pthread_mutex_unlock(&philo->table->write_mtx);
+}
+
 void	print_action(char *str, t_philo *philo)
 {
     if (check_death(philo))
     {
-	pthread_mutex_lock(&philo->table->write_mtx);
-	printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
-	pthread_mutex_unlock(&philo->table->write_mtx);
+	printj(str, philo);
 	exit (1);
     }
-    pthread_mutex_lock(&philo->table->write_mtx);
-    printf("%lu %i %s\n", current_ms() - philo->table->start_time, philo->seat, str);
-    pthread_mutex_unlock(&philo->table->write_mtx);
+    printj(str, philo);
 }
 
 int eat(t_philo *philo)
