@@ -46,6 +46,5 @@ void	*monitor(t_table *table)
 	if (count == table->n_philos)
 	    count = 0;
     }
-    printf("monitor\n");
     return (NULL);
 }

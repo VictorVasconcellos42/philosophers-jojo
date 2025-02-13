@@ -18,15 +18,25 @@ static int eat(t_philo *philo)
 	return (1);
     pthread_mutex_lock(philo->left_hashi);
     if (print_routine("has taken a fork", philo) == 1)
+    {
 	return (1);
+    }
     pthread_mutex_lock(philo->right_hashi);
     if (print_routine("has taken a fork", philo) == 1)
+    {
 	return (1);
+    }
     if (print_routine("is eating", philo) == 1)
+    {
 	return (1);
+    }
     philo->last_meal = current_ms();
     if (usleep_until(philo->table->time_to_eat, philo) == 1)
+    {
+	pthread_mutex_unlock(philo->left_hashi);
+	pthread_mutex_unlock(philo->right_hashi);
 	return (1);
+    }
     pthread_mutex_unlock(philo->left_hashi);
     pthread_mutex_unlock(philo->right_hashi);
     philo->meals++;
@@ -67,6 +77,5 @@ void	*dinner(t_philo *philo)
 	if (think(philo) == 1)
 	    break ;
     }
-    printf("%i\n", philo->seat);
     return (NULL);
 }
