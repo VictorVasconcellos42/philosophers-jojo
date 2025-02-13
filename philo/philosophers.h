@@ -1,42 +1,42 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-#define TRUE 1
-#define FALSE 0
+# define TRUE 1
+# define FALSE 0
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <pthread.h>
-#include <stdbool.h>
+# include <limits.h>
+# include <pthread.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <sys/time.h>
+# include <unistd.h>
 
-typedef struct					s_philo
+typedef struct s_philo
 {
-	int					seat;
-	pthread_t			thread;
+	int				seat;
+	pthread_t		thread;
 	// pthread_mutex_t		dead_mtx;
 
 	// int					dead;
 
-	int			meals;
+	int				meals;
 	// int						full;
-	long unsigned			last_meal;
+	long unsigned	last_meal;
 
-	pthread_mutex_t			*left_hashi;	
-	pthread_mutex_t			*right_hashi;
+	pthread_mutex_t	*left_hashi;
+	pthread_mutex_t	*right_hashi;
 
-	struct s_table			*table;
+	struct s_table	*table;
 
-} t_philo;
+}					t_philo;
 
 typedef struct s_table
 {
 	int				n_philos;
-	t_philo				*philos;
-	pthread_mutex_t			*hashis;
-	pthread_t			monitor_thread;
+	t_philo			*philos;
+	pthread_mutex_t	*hashis;
+	pthread_t		monitor_thread;
 
 	int				n_meals;
 	int				time_to_die;
@@ -45,38 +45,38 @@ typedef struct s_table
 
 	int				philos_ready;
 
-	long				start_time;
+	long			start_time;
 
-	int						death;
-	pthread_mutex_t			dead_mtx;
-	pthread_mutex_t			meal_mtx;
+	int				death;
+	pthread_mutex_t	dead_mtx;
+	pthread_mutex_t	meal_mtx;
 
-	pthread_mutex_t			write_mtx;
+	pthread_mutex_t	write_mtx;
 
-}						t_table;
+}					t_table;
 
 // dinner.c
-void	*dinner(t_philo *philo);
-int more_meals(t_philo *philo);
+void				*dinner(t_philo *philo);
+int					more_meals(t_philo *philo);
 
 // init.c
-void	init(t_table *table);
+void				init(t_table *table);
 
 // monitor.c
-int death(t_philo *philo);
-void	*monitor(t_table *table);
+int					death(t_philo *philo);
+void				*monitor(t_table *table);
 
 // parser.c
-void parse(int argc, char **argv, t_table *table);
+void				parse(int argc, char **argv, t_table *table);
 
 // utils.c
-size_t	current_ms(void);
-int	ft_usleep(size_t milliseconds);
-int	usleep_until(size_t milliseconds, t_philo *philo);
-int	ft_atol(char *ascii);
+size_t				current_ms(void);
+int					ft_usleep(size_t milliseconds);
+int					usleep_until(size_t milliseconds, t_philo *philo);
+int					ft_atol(char *ascii);
 
 // print.c
-void	printj(char *str, t_philo *philo);
-int	print_routine(char *str, t_philo *philo);
+void				printj(char *str, t_philo *philo);
+int					print_routine(char *str, t_philo *philo);
 
 #endif

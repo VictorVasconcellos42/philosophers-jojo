@@ -33,13 +33,13 @@ int	usleep_until(size_t milliseconds, t_philo *philo)
 	return (0);
 }
 
-int atoi_wrapper(char *ascii);
+int		atoi_wrapper(char *ascii);
 
 int	ft_atol(char *ascii)
 {
-	int	i;
-	int	sig;
-	int	count;
+	int		i;
+	int		sig;
+	int		count;
 	long	nb;
 
 	i = 0;
@@ -56,5 +56,5 @@ int	ft_atol(char *ascii)
 	}
 	while (ascii[i] >= '0' && ascii[i] <= '9')
 		nb = nb * 10 + (ascii[i++] - '0');
-    return (nb * sig);
+	return (nb * sig);
 }
