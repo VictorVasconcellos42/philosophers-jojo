@@ -64,12 +64,12 @@ void parse(int argc, char **argv, t_table *table)
 	    ret = printf("time to die must be from 1 to %i\n", INT_MAX);
     if (argc == 6)
     {
-	table->n_meals = ft_atol(argv[5]);
-	    if (table->n_meals > INT_MAX || table->n_meals < 0)
-		ret = printf("time to die must be from 0 to %i\n", INT_MAX);
+		table->n_meals = ft_atol(argv[5]);
+		if (table->n_meals > INT_MAX || table->n_meals < 0)
+			ret = printf("n_meal must be from 0 to %i\n", INT_MAX);
     }
     else
-	table->n_meals = -1;
+		table->n_meals = -1;
     if (ret)
-	exit (1);
+		exit (1);
 }

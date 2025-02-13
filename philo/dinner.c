@@ -31,8 +31,8 @@ int more_meals(t_philo *philo)
     pthread_mutex_lock(&philo->table->meal_mtx);
     if (philo->table->n_meals == -1 || philo->meals < philo->table->n_meals)
     {
-	pthread_mutex_unlock(&philo->table->meal_mtx);
-	return (TRUE);
+        pthread_mutex_unlock(&philo->table->meal_mtx);
+        return (TRUE);
     }
     pthread_mutex_unlock(&philo->table->meal_mtx);
     return (FALSE);
@@ -90,12 +90,14 @@ void	*dinner(t_philo *philo)
 	usleep(100);
     while (!death(philo)) // && more_meals(philo))
     {
-	if (eat(philo) == 1)
-	    break ;
-	if (nap(philo) == 1)
-	    break ;
-	if (think(philo) == 1)
-	    break ;
+        if (philo->meals == philo->table->n_meals)
+            break ;
+        if (eat(philo) == 1)
+            break ;
+        if (nap(philo) == 1)
+            break ;
+        if (think(philo) == 1)
+            break ;
     }
     return (NULL);
 }

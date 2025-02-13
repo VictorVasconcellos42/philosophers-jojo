@@ -5,10 +5,7 @@ void	init_hashis(t_table *table)
     table->hashis = malloc(sizeof(pthread_mutex_t) * (table->n_philos + 1));
     int	count = 0;
     while (count < table->n_philos)
-    {
-	pthread_mutex_init(&table->hashis[count], NULL);
-	count++;
-    }
+        pthread_mutex_init(&table->hashis[count++], NULL);
 }
 
 void	init_philos(t_table *table)

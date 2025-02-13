@@ -45,18 +45,16 @@ void	*monitor(t_table *table)
 	    break ;
     while (count < table->n_philos)
     {
-	if (mark_dead(&table->philos[count]))
-	{
-	    // printf("%lu, \n", current_ms() - table->philos[count].last_meal);
-	    printj("is DEAD", &table->philos[count]);
-	    // exit (1);
-	    // return (NULL);
-	    // end simulation and destroy threads
-	    break ;
-	}
-	count++;
-	if (count == table->n_philos)
-	    count = 0;
+		if (mark_dead(&table->philos[count]))
+		{
+			printj("is DEAD", &table->philos[count]);
+			break ;
+		}
+		else if (table->n_meals != -1 && table->philos[count].meals == table->n_meals)
+			break ;
+		count++;
+		if (count == table->n_philos)
+			count = 0;
     }
     return (NULL);
 }
