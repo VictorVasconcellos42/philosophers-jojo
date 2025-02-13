@@ -40,7 +40,7 @@ void parse(int argc, char **argv, t_table *table)
     {
 	table->n_meals = ft_atol(argv[5]);
 	    if (table->n_meals > INT_MAX || table->n_meals < 0)
-		ret = printf("time to die must be from 0 to %i\n", INT_MAX);
+		ret = printf("number of times each philosopher must eat has be from 0 to %i\n", INT_MAX);
     }
     else
 	table->n_meals = -1;

@@ -1,6 +1,6 @@
 # include "philosophers.h"
 
-static int more_meals(t_philo *philo)
+int more_meals(t_philo *philo)
 {
     pthread_mutex_lock(&philo->table->meal_mtx);
     if (philo->table->n_meals == -1 || philo->meals < philo->table->n_meals)
@@ -17,19 +17,10 @@ static int eat(t_philo *philo)
     if (!more_meals(philo))
 	return (1);
     pthread_mutex_lock(philo->left_hashi);
-    if (print_routine("has taken a fork", philo) == 1)
-    {
-	return (1);
-    }
+    print_routine("has taken a fork", philo);
     pthread_mutex_lock(philo->right_hashi);
-    if (print_routine("has taken a fork", philo) == 1)
-    {
-	return (1);
-    }
-    if (print_routine("is eating", philo) == 1)
-    {
-	return (1);
-    }
+    print_routine("has taken a fork", philo);
+    print_routine("is eating", philo);
     philo->last_meal = current_ms();
     if (usleep_until(philo->table->time_to_eat, philo) == 1)
     {

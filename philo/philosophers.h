@@ -57,6 +57,7 @@ typedef struct s_table
 
 // dinner.c
 void	*dinner(t_philo *philo);
+int more_meals(t_philo *philo);
 
 // init.c
 void	init(t_table *table);

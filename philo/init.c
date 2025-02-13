@@ -35,6 +35,14 @@ static void	init_philos(t_table *table)
 
 void	init(t_table *table)
 {
+    if (table->n_philos == 1)
+    {
+	printf("%lu %i has taken a fork\n", (unsigned long)0, 1);
+	printf("%lu %i is DEAD\n", (unsigned long)table->time_to_die, 1);
+	free(table->philos);
+	free(table->hashis);
+	exit(1);
+    }
     init_hashis(table);
     init_philos(table);
     table->start_time = current_ms();

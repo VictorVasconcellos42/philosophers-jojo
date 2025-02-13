@@ -1,5 +1,4 @@
 # include "philosophers.h"
-#include <stdio.h>
 
 static int mark_dead(t_philo *philo)
 {
@@ -26,6 +25,7 @@ int death(t_philo *philo)
 
 void	*monitor(t_table *table)
 {
+    int	philos_eaten = 0;
     int	count = 0;
 
     while (1)
@@ -42,6 +42,13 @@ void	*monitor(t_table *table)
 	    // end simulation and destroy threads
 	    break ;
 	}
+	else if (!more_meals(&table->philos[count]))
+	{
+	    philos_eaten++;
+	    if (philos_eaten == table->n_philos)
+		break ;
+	}
+
 	count++;
 	if (count == table->n_philos)
 	    count = 0;
