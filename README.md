@@ -7,7 +7,7 @@ Se trata de um problema teórico proposto por Edsger Dijkstra em 1965 - The Dini
 
 O programa exibe no terminal uma mensagem para cada tarefa executada por cada um dos filósofos, acompanhada pelo milissegundo em que foi executada. Os filósofos são threads numeradas que seguem uma rotina de acordo com as regras do desafio. 
 
-![[screenshot.png]]
+![image](screenshot.png)
 
 ## Desenvolvimento
 A partir de um input no seguinte formato: (sendo o ultimo parâmetro opcional)
