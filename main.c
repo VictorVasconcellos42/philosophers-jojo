@@ -30,8 +30,7 @@ int	main(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 	{
 		printf("\ninsert a valid input(int):\n");
-		printf("./philo number_of_philosophers time_to_die time_to_eat,
-				time_to_sleep [number_of_times_each_philosopher_must_eat]\n\n");
+		printf("./philo [num_of_philos] [time_to_die] [time_to_eat] [time_to_sleep] [num_of_meals]\n\n");
 		return (EXIT_FAILURE);
 	}
 	parse(argc, argv, &table);
